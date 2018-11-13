@@ -27,6 +27,10 @@ spec:
       - name: login-api
         image: nalej/login-api:VERSION
         imagePullPolicy: IfNotPresent
+        args:
+        - "run"
+        - "--debug"
+        - "--authxAddress=authx.nalej:8810"
         securityContext:
           runAsUser: 2000
       imagePullSecrets:
