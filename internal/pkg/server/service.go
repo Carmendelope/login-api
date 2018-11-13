@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/nalej/derrors"
-	"github.com/nalej/grpc-login-api-go"
 	"github.com/nalej/grpc-authx-go"
+	"github.com/nalej/grpc-login-api-go"
 	"github.com/nalej/grpc-utils/pkg/tools"
 	"github.com/nalej/login-api/internal/pkg/server/login"
 	"github.com/rs/zerolog/log"
@@ -18,6 +18,7 @@ import (
 	"google.golang.org/grpc/reflection"
 	"net"
 	"net/http"
+	"strings"
 )
 
 type Service struct {
@@ -56,6 +57,29 @@ func (s *Service) Run() error {
 	return s.LaunchHTTP()
 }
 
+// allowCORS allows Cross Origin Resource Sharing from any origin.
+// Don't do this without consideration in production systems.
+func (s * Service) allowCORS(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if origin := r.Header.Get("Origin"); origin != "" {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			if r.Method == "OPTIONS" && r.Header.Get("Access-Control-Request-Method") != "" {
+				preflightHandler(w, r)
+				return
+			}
+		}
+		h.ServeHTTP(w, r)
+	})
+}
+
+func preflightHandler(w http.ResponseWriter, r *http.Request) {
+	headers := []string{"Content-Type", "Accept"}
+	w.Header().Set("Access-Control-Allow-Headers", strings.Join(headers, ","))
+	methods := []string{"GET", "HEAD", "POST", "PUT", "DELETE"}
+	w.Header().Set("Access-Control-Allow-Methods", strings.Join(methods, ","))
+	log.Debug().Str("URL", r.URL.Path).Msg("preflight request")
+}
+
 func (s * Service) LaunchHTTP() error {
 	addr := fmt.Sprintf(":%d", s.Configuration.HTTPPort)
 	clientAddr := fmt.Sprintf(":%d", s.Configuration.Port)
@@ -66,8 +90,14 @@ func (s * Service) LaunchHTTP() error {
 		log.Fatal().Err(err).Msg("failed to start organizations handler")
 	}
 
+	server := &http.Server{
+		Addr:    addr,
+		Handler: s.allowCORS(mux),
+	}
+
 	log.Info().Str("address", addr).Msg("HTTP Listening")
-	return http.ListenAndServe(addr, mux)
+	return server.ListenAndServe()
+	//return http.ListenAndServe(addr, mux)
 }
 
 func (s * Service) LaunchGRPC() error {

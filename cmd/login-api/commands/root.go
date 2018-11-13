@@ -18,9 +18,10 @@ var debugLevel bool
 var consoleLogging bool
 
 var rootCmd = &cobra.Command{
-	Use:   "example",
-	Short: "Example of a cobra command",
-	Long:  `A long explanation about what is a cobra command`,
+	Use:   "login-api",
+	Short: "Login API component",
+	Long:  `The Login API component processes login request from the users
+returning a JWT token with the authx information.`,
 	Version: "unknown-version",
 
 	Run: func(cmd *cobra.Command, args []string) {
