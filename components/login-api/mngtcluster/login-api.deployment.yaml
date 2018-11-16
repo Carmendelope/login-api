@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: login-api
-        image: nalej/login-api:VERSION
+        image: nalejregistry.azurecr.io/nalej/login-api:VERSION
         imagePullPolicy: IfNotPresent
         args:
         - "run"
@@ -34,4 +34,4 @@ spec:
         securityContext:
           runAsUser: 2000
       imagePullSecrets:
-      - name: myregistrykey
+      - name: nalej-registry
