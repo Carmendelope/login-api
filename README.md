@@ -261,3 +261,12 @@ spec:
       imagePullSecrets:
       - name: myregistrykey
 ```
+
+# Integration tests
+
+ The following table contains the variables that activate the integration tests
+
+ | Variable  | Example Value | Description |
+ | ------------- | ------------- |------------- |
+ | RUN_INTEGRATION_TEST  | true | Run integration tests |
+ | IT_AUTHX_ADDRESS  | localhost:8810 | Authx Address |
