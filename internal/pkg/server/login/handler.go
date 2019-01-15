@@ -33,7 +33,7 @@ func (h * Handler) LoginWithBasicCredentials(ctx context.Context, loginRequest *
 	response, lgErr := h.Manager.LoginWithBasicCredentials(loginRequest)
 	if lgErr != nil {
 		log.Error().Str("trace", conversions.ToDerror(lgErr).DebugReport()).Msg("login error")
-		return nil, derrors.NewGenericError("Invalid credentials")
+		return nil, conversions.ToGRPCError(derrors.NewGenericError("Invalid credentials"))
 	}
 
 	return response, lgErr
