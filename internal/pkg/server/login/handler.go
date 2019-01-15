@@ -6,9 +6,11 @@ package login
 
 import (
 	"context"
+	"github.com/nalej/derrors"
 	"github.com/nalej/grpc-authx-go"
 	"github.com/nalej/grpc-utils/pkg/conversions"
 	"github.com/nalej/login-api/internal/pkg/entities"
+	"github.com/rs/zerolog/log"
 )
 
 // Handler structure for the user requests.
@@ -28,5 +30,11 @@ func (h * Handler) LoginWithBasicCredentials(ctx context.Context, loginRequest *
 	if err != nil {
 		return nil, conversions.ToGRPCError(err)
 	}
-	return h.Manager.LoginWithBasicCredentials(loginRequest)
+	response, lgErr := h.Manager.LoginWithBasicCredentials(loginRequest)
+	if lgErr != nil {
+		log.Error().Str("trace", err.DebugReport()).Msg("login error")
+		return nil, derrors.NewGenericError("Invalid credentials")
+	}
+
+	return response, lgErr
 }
