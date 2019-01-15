@@ -26,7 +26,7 @@ spec:
       containers:
       - name: login-api
         image: nalejregistry.azurecr.io/nalej/login-api:VERSION
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         args:
         - "run"
         - "--debug"
