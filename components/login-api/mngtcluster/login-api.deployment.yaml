@@ -9,7 +9,7 @@ metadata:
     cluster: management
     component: login-api
   name: login-api
-  namespace: nalej
+  namespace: __NPH_NAMESPACE
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -25,12 +25,12 @@ spec:
     spec:
       containers:
       - name: login-api
-        image: nalejregistry.azurecr.io/nalej/login-api:VERSION
+        image: __NPH_REGISTRY.azurecr.io/__NPH_REGISTRY_NAMESPACE/login-api:__NPH_VERSION
         imagePullPolicy: Always
         args:
         - "run"
         - "--debug"
-        - "--authxAddress=authx.nalej:8810"
+        - "--authxAddress=authx.__NPH_NAMESPACE:8810"
         securityContext:
           runAsUser: 2000
       imagePullSecrets:
