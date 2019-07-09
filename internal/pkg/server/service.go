@@ -11,7 +11,6 @@ import (
 	"github.com/nalej/derrors"
 	"github.com/nalej/grpc-authx-go"
 	"github.com/nalej/grpc-login-api-go"
-	"github.com/nalej/grpc-utils/pkg/tools"
 	"github.com/nalej/login-api/internal/pkg/server/login"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
@@ -23,14 +22,12 @@ import (
 
 type Service struct {
 	Configuration Config
-	Server * tools.GenericGRPCServer
 }
 
 // NewService creates a new system model service.
 func NewService(conf Config) *Service {
 	return &Service{
 		conf,
-		tools.NewGenericGRPCServer(uint32(conf.Port)),
 	}
 }
 
