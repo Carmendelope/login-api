@@ -10,4 +10,8 @@
 
 #### What are the relevant tickets?
 
-- [NP-XXX](https://daisho.atlassian.net/browse/NP-XXX)
+- [NP-XXX](https://nalej.atlassian.net/browse/NP-XXX)
+
+#### Screenshots (if appropriate)
+
+#### Questions
