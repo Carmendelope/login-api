@@ -59,9 +59,6 @@ Example:
 ​
 ## Known Issues
 ​
-Explain any relevant issues that may affect this repo.
-​
-​
 ## Contributing
 ​
 Please read [contributing.md](contributing.md) for details on our code of conduct, and the process for submitting pull requests to us.
