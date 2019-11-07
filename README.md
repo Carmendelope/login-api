@@ -2,6 +2,9 @@
 ​
 This component exposes a gRPC API to introduce basic credentials and get a JWT authenticated token with the roles assigned
 to the specified user.
+
+Notice that the Login API supports REST and gRPC request by means of the [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)
+that is launched when the server starts.
 ​
 ## Getting Started
 ​
@@ -39,8 +42,11 @@ There are integration tests that need some configuration and appliance to be rea
 
 * Have a running and accessible instance of [authx](https://github.com/nalej/authx).
 * Set the following environment variables:
-    * **RUN_INTEGRATION_TEST** = true
-    * **IT_AUTHX_ADDRESS** = [authx_IP_address]
+
+ | Variable             | Example Value  | Description           |
+ | -------------------- | -------------- | --------------------- |
+ | RUN_INTEGRATION_TEST | true           | Run integration tests |
+ | IT_AUTHX_ADDRESS     | localhost:8800 | Authx Address         |
 
 ### Update dependencies
 ​
@@ -78,7 +84,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ​
 ## Authors
 ​
-See also the list of [contributors](https://github.com/nalej/grpc-utils/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/nalej/login-api/contributors) who participated in this project.
 ​
 ## License
 
