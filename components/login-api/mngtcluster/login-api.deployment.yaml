@@ -24,13 +24,13 @@ spec:
         component: login-api
     spec:
       containers:
-      - name: login-api
-        image: __NPH_REGISTRY/__NPH_REGISTRY_NAMESPACE/login-api:__NPH_VERSION
-        imagePullPolicy: Always
-        args:
-        - "run"
-        - "--authxAddress=authx.__NPH_NAMESPACE:8810"
-        securityContext:
-          runAsUser: 2000
+        - name: login-api
+          image: __NPH_REGISTRY/__NPH_REGISTRY_NAMESPACE/login-api:__NPH_VERSION
+          imagePullPolicy: Always
+          args:
+            - "run"
+            - "--authxAddress=authx.__NPH_NAMESPACE:8810"
+          securityContext:
+            runAsUser: 2000
       imagePullSecrets:
-      - name: nalej-registry
+        - name: nalej-registry
