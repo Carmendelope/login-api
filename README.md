@@ -1,6 +1,6 @@
 # login-api
 ​
-This component exposes a gRPC API to introduce basic credentials and get a JWT authenticated token with the roles asigned
+This component exposes a gRPC API to introduce basic credentials and get a JWT authenticated token with the roles assigned
 to the specified user.
 ​
 ## Getting Started
@@ -16,7 +16,7 @@ To run this component you should have deployed at least the following components
 ​
 ### Build and compile
 ​
-In order to build and compile this repository use the provided Makefile:
+To build and compile this repository use the provided Makefile:
 ​
 ```
 make all
@@ -41,18 +41,21 @@ Dependencies are managed using Godep. For an automatic dependencies download use
 make dep
 ```
 ​
-In order to have all dependencies up-to-date run:
+To have all dependencies up-to-date run:
 ​
 ```
 dep ensure -update -v
 ```
 ​
 ## User client interface
-Explain the main features for the user client interface. Explaining the whole
-CLI is never required. If you consider relevant to explain certain aspects of
-this client, please provided the users with them.
-​
-Ignore this entry if it does not apply.
+
+To interact with this component, you can leverage the [public-api-cli](https://github.com/nalej/public-api).
+The command that interacts with this component is `login`.
+
+Example:
+```shell script
+./public-api-cli login --email example@nalej.com --password change_me
+```
 ​
 ## Known Issues
 ​
