@@ -27,12 +27,21 @@ run existing tests and generate ready-to-deploy Kubernetes files.
 ​
 ### Run tests
 ​
-Tests are executed using Ginkgo. To run all the available tests:
+Tests are executed using Ginkgo. To run all the available unit tests:
 ​
 ```
 make test
 ```
 ​
+#### Integration tests
+
+There are integration tests that need some configuration and appliance to be ready to run:
+
+* Have a running and accessible instance of [authx](https://github.com/nalej/authx).
+* Set the following environment variables:
+    * **RUN_INTEGRATION_TEST** = true
+    * **IT_AUTHX_ADDRESS** = [authx_IP_address]
+
 ### Update dependencies
 ​
 Dependencies are managed using Godep. For an automatic dependencies download use:
