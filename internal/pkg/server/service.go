@@ -1,5 +1,14 @@
 /*
- * Copyright (C) 2018 Nalej - All Rights Reserved
+ * Copyright 2019 Nalej
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package server
@@ -35,9 +44,9 @@ type Clients struct {
 	accessClient grpc_authx_go.AuthxClient
 }
 
-func (s * Service) GetClients() (* Clients, derrors.Error) {
+func (s *Service) GetClients() (*Clients, derrors.Error) {
 	authxConn, err := grpc.Dial(s.Configuration.AuthxAddress, grpc.WithInsecure())
-	if err != nil{
+	if err != nil {
 		return nil, derrors.AsError(err, "cannot create connection with the authx manager")
 	}
 
@@ -56,7 +65,7 @@ func (s *Service) Run() error {
 
 // allowCORS allows Cross Origin Resource Sharing from any origin.
 // Don't do this without consideration in production systems.
-func (s * Service) allowCORS(h http.Handler) http.Handler {
+func (s *Service) allowCORS(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if origin := r.Header.Get("Origin"); origin != "" {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
@@ -77,7 +86,7 @@ func preflightHandler(w http.ResponseWriter, r *http.Request) {
 	log.Debug().Str("URL", r.URL.Path).Msg("preflight request")
 }
 
-func (s * Service) LaunchHTTP() error {
+func (s *Service) LaunchHTTP() error {
 	addr := fmt.Sprintf(":%d", s.Configuration.HTTPPort)
 	clientAddr := fmt.Sprintf(":%d", s.Configuration.Port)
 	opts := []grpc.DialOption{grpc.WithInsecure()}
@@ -97,9 +106,9 @@ func (s * Service) LaunchHTTP() error {
 	//return http.ListenAndServe(addr, mux)
 }
 
-func (s * Service) LaunchGRPC() error {
+func (s *Service) LaunchGRPC() error {
 	clients, cErr := s.GetClients()
-	if cErr != nil{
+	if cErr != nil {
 		log.Fatal().Str("err", cErr.DebugReport()).Msg("cannot generate clients")
 		return cErr
 	}

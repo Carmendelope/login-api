@@ -20,15 +20,15 @@
 
 [[constraint]]
     name="github.com/nalej/derrors"
-    version="v2.0.0"
+    version="v2.1.0"
 
 [[constraint]]
     name="github.com/nalej/grpc-authx-go"
-    version="v0.0.34"
+    version="v0.0.53"
 
 [[constraint]]
     name="github.com/nalej/grpc-login-api-go"
-    version="v0.0.21"
+    version="v0.0.22"
 
 [[constraint]]
     name="github.com/grpc-ecosystem/grpc-gateway"
