@@ -1,4 +1,4 @@
-variables:
+variables: 
   - group: common-vars
   - group: slack-webhooks
   - group: docker-registries
@@ -22,94 +22,94 @@ resources:
       tags: v1.0.1
 
 jobs:
-  - job: MainWorkflow
+- job: MainWorkflow
 
-    pool:
-      vmImage: 'Ubuntu-16.04'
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  
+  steps:
+  - template: misc/variables.yaml@ci_templates
 
-    steps:
-      - template: misc/variables.yaml@ci_templates
+  - template: misc/nalej-component.yaml@ci_templates
 
-      - template: misc/nalej-component.yaml@ci_templates
+  - template: slack/build/start.yaml@ci_templates
+    parameters:
+      author: $(authorName)
+      repository: $(Build.Repository.Name)
+      branch: $(Build.SourceBranch)
+      commit: $(Build.SourceVersionMessage)
+      buildUrl: $(buildUrl)$(Build.BuildId)
+      slackWebhook: $(slackBuilds)
 
-      - template: slack/build/start.yaml@ci_templates
-        parameters:
-          author: $(authorName)
-          repository: $(Build.Repository.Name)
-          branch: $(Build.SourceBranch)
-          commit: $(Build.SourceVersionMessage)
-          buildUrl: $(buildUrl)$(Build.BuildId)
-          slackWebhook: $(slackBuilds)
+  - script: |
+      mkdir -p '$(GOBIN)'
+      mkdir -p '$(GOPATH)/pkg'
+      mkdir -p '$(modulePath)'
+      shopt -s extglob
+      shopt -s dotglob
+      mv !(gopath) '$(modulePath)'
+      echo '##vso[task.prependpath]$(GOBIN)'
+      echo '##vso[task.prependpath]$(GOROOT)/bin'
+    displayName: 'Set up the Go workspace'
 
-      - script: |
-          mkdir -p '$(GOBIN)'
-          mkdir -p '$(GOPATH)/pkg'
-          mkdir -p '$(modulePath)'
-          shopt -s extglob
-          shopt -s dotglob
-          mv !(gopath) '$(modulePath)'
-          echo '##vso[task.prependpath]$(GOBIN)'
-          echo '##vso[task.prependpath]$(GOROOT)/bin'
-        displayName: 'Set up the Go workspace'
+  - template: go/dep.yaml@ci_templates
+    parameters:
+      sshHostName: $(hostName)
+      sshPublicKey: $(sshPublicKey)
+      modulePath: $(modulePath)
 
-      - template: go/dep.yaml@ci_templates
-        parameters:
-          sshHostName: $(hostName)
-          sshPublicKey: $(sshPublicKey)
-          modulePath: $(modulePath)
+  - template: go/test.yaml@ci_templates
+    parameters:
+      modulePath: $(modulePath)
 
-      - template: go/test.yaml@ci_templates
-        parameters:
-          modulePath: $(modulePath)
+  - template: go/gofmt.yaml@ci_templates
+    parameters:
+      modulePath: $(modulePath)
 
-      - template: go/gofmt.yaml@ci_templates
-        parameters:
-          modulePath: $(modulePath)
+  - template: go/build.yaml@ci_templates
+    parameters:
+      modulePath: $(modulePath)
+      appList: $(appList)
+      version: $(version)
+  
+  - template: docker/login.yaml@ci_templates
+    parameters:
+      username: $(spAppId)
+      password: $(spPassword)
+      dockerRegistry: $(stagingDockerRegistry)
+    
+  - template: docker/build.yaml@ci_templates
+    parameters:
+      modulePath: $(modulePath)
+      imageList: $(imageList)
+      dockerRegistry: $(stagingDockerRegistry)
+      version: $(version)
+  
+  - template: docker/push.yaml@ci_templates
+    parameters:
+      modulePath: $(modulePath)
+      imageList: $(imageList)
+      dockerRegistry: $(stagingDockerRegistry)
+      version: $(version)
+    
+  - template: docker/logout.yaml@ci_templates
+    parameters:
+      dockerRegistry: $(stagingDockerRegistry)
 
-      - template: go/build.yaml@ci_templates
-        parameters:
-          modulePath: $(modulePath)
-          appList: $(appList)
-          version: $(version)
-
-      - template: docker/login.yaml@ci_templates
-        parameters:
-          username: $(spAppId)
-          password: $(spPassword)
-          dockerRegistry: $(stagingDockerRegistry)
-
-      - template: docker/build.yaml@ci_templates
-        parameters:
-          modulePath: $(modulePath)
-          imageList: $(imageList)
-          dockerRegistry: $(stagingDockerRegistry)
-          version: $(version)
-
-      - template: docker/push.yaml@ci_templates
-        parameters:
-          modulePath: $(modulePath)
-          imageList: $(imageList)
-          dockerRegistry: $(stagingDockerRegistry)
-          version: $(version)
-
-      - template: docker/logout.yaml@ci_templates
-        parameters:
-          dockerRegistry: $(stagingDockerRegistry)
-
-      - template: slack/build/finish.yaml@ci_templates
-        parameters:
-          author: $(authorName)
-          repository: $(Build.Repository.Name)
-          branch: $(Build.SourceBranch)
-          commit: $(Build.SourceVersionMessage)
-          buildUrl: $(buildUrl)$(Build.BuildId)
-          slackWebhook: $(slackBuilds)
-
-      - template: slack/build/failed.yaml@ci_templates
-        parameters:
-          author: $(authorName)
-          repository: $(Build.Repository.Name)
-          branch: $(Build.SourceBranch)
-          commit: $(Build.SourceVersionMessage)
-          buildUrl: $(buildUrl)$(Build.BuildId)
-          slackWebhook: $(slackCIFailed)
+  - template: slack/build/finish.yaml@ci_templates
+    parameters:
+      author: $(authorName)
+      repository: $(Build.Repository.Name)
+      branch: $(Build.SourceBranch)
+      commit: $(Build.SourceVersionMessage)
+      buildUrl: $(buildUrl)$(Build.BuildId)
+      slackWebhook: $(slackBuilds)
+  
+  - template: slack/build/failed.yaml@ci_templates
+    parameters:
+      author: $(authorName)
+      repository: $(Build.Repository.Name)
+      branch: $(Build.SourceBranch)
+      commit: $(Build.SourceVersionMessage)
+      buildUrl: $(buildUrl)$(Build.BuildId)
+      slackWebhook: $(slackCIFailed)
