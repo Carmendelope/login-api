@@ -8,6 +8,9 @@
   "image_list": [
     "login-api"
   ],
+  "component_list": [
+    "login-api"
+  ],
   "tools": [
     "k8s",
     "docker"
