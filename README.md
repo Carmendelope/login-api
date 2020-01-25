@@ -3,7 +3,7 @@
 This component exposes a gRPC API to introduce basic credentials and get a JWT authenticated token with the roles assigned
 to the specified user.
 
-Notice that the Login API supports REST and gRPC request by means of the [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)
+Notice that the `login-api` supports REST and gRPC requests through the [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)
 that is launched when the server starts.
 ​
 ## Getting Started
@@ -13,9 +13,7 @@ This component receives login requests crafted with `grpc_authx_go.LoginWithBasi
 ​
 ### Prerequisites
 ​
-To run this component you should have deployed at least the following components:
-​
-* [authx](https://github.com/nalej/authx)
+* [`authx`](https://github.com/nalej/authx)
 ​
 ### Build and compile
 ​
@@ -25,8 +23,7 @@ To build and compile this repository use the provided Makefile:
 make all
 ```
 ​
-This operation generates the binaries for this repo, download dependencies,
-run existing tests and generate ready-to-deploy Kubernetes files.
+This operation generates the binaries for this repo, downloads the required dependencies, runs existing tests and generates ready-to-deploy Kubernetes files.
 ​
 ### Run tests
 ​
@@ -38,9 +35,9 @@ make test
 ​
 #### Integration tests
 
-There are integration tests that need some configuration and appliance to be ready to run:
+There are integration tests that need some configuration to be ready to run:
 
-* Have a running and accessible instance of [authx](https://github.com/nalej/authx).
+* Have a running and accessible instance of [`authx`](https://github.com/nalej/authx).
 * Set the following environment variables:
 
  | Variable             | Example Value  | Description           |
@@ -64,7 +61,7 @@ dep ensure -update -v
 ​
 ## User client interface
 
-To interact with this component, you can leverage the [public-api-cli](https://github.com/nalej/public-api).
+To interact with this component, you can use the [`public-api-cli`](https://github.com/nalej/public-api).
 The command that interacts with this component is `login`.
 
 Example:
@@ -80,7 +77,7 @@ Please read [contributing.md](contributing.md) for details on our code of conduc
 ​
 ## Versioning
 ​
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/nalej/login-api/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the available versions, see the [tags on this repository](https://github.com/nalej/login-api/tags). 
 ​
 ## Authors
 ​
